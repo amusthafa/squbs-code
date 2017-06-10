@@ -20,6 +20,9 @@ public class PaymentActor extends AbstractActor {
         rcvBuilder.match(PaymentRequest.class, request -> {
                     log.info("Received payment request of ${} accounts {} => {}",
                             request.amount / 100D, request.payerAcct, request.payeeAcct);
+            PaymentResponse response =
+                    new PaymentResponse(new RecordId(creatorId, id++), request.id, PaymentStatus.APPROVED);
+            sender().tell(response, self());
                 }
         );
 

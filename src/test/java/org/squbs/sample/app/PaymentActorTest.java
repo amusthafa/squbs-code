@@ -7,6 +7,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 
 
 public class PaymentActorTest {
@@ -31,7 +32,7 @@ public class PaymentActorTest {
         system = null;
     }
 
-    @Test
+  /*  @Test
     public void pingPaymentActor() {
         new JavaTestKit(system) {{
             paymentActor.tell(new PaymentRequest(new RecordId(creator, id++), 1001, 2001, 30000), getRef());
@@ -43,6 +44,14 @@ public class PaymentActorTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }*/
+    @Test
+    public void lowRiskPayment() {
+        new JavaTestKit(system) {{
+            paymentActor.tell(new PaymentRequest(new RecordId(creator, id++), 1001, 2001, 1000), getRef());
+            PaymentResponse response = expectMsgClass(PaymentResponse.class);
+            assertEquals(PaymentStatus.APPROVED, response.status);
+        }};
     }
 
 

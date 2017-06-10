@@ -25,15 +25,10 @@ public class PaymentStreamActor extends AbstractActor {
     final Source<Integer, NotUsed> src = Source.range(1, 10);
 
     final Sink<Integer, CompletionStage<Done>> sink = Sink.foreach(System.out::println);
-    // Add this line ^^^^^^^^^^
-
 
     final Flow<Integer, Integer, NotUsed> filter = Flow.of(Integer.class).filter(i -> i % 2 == 0);
 
     final Flow<Integer, Integer, NotUsed> square = Flow.of(Integer.class).map(i -> i * i);
-    // Add this line ^^^^^^^^^
-
-  //  final Sink<Integer, CompletionStage<Done>> sink = Sink.foreach(System.out::println);
 
     final Source<Integer, NotUsed> filteredSource = src.via(filter);
 
@@ -59,22 +54,22 @@ public class PaymentStreamActor extends AbstractActor {
         );
     }
 
-  /*  private void run() {
+    private void run() {
         src.runForeach(System.out::println, mat);
-    }*/
+    }
 
   /*  private void run() {
         final RunnableGraph<NotUsed> stream = src.to(sink);
         stream.run(mat);
     }*/
 
-    private void run() {
+    /*private void run() {
         final RunnableGraph<CompletionStage<Integer>> stream =
                 src.via(filter).via(square).via(print).toMat(sum, Keep.right());
         final CompletionStage<Integer> resultFuture =
                 stream.run(mat);
         pipe(resultFuture, context().dispatcher()).to(sender());
-    }
+    }*/
 
 
 }
